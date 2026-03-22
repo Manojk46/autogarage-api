@@ -18,8 +18,8 @@ public class LoginUserDetailsService implements UserDetailsService {
 		User user=repository.findByName(username);
 		if(user==null) {
 			throw new UsernameNotFoundException("Not Found");
-		}
-		return new UserPrincipal(user);
+		}else {
+		return new UserPrincipal(user);}
 	}
 
 }

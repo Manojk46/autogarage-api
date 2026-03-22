@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password4j.BcryptPassword4jPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.garage.autogarage.service.LoginUserDetailsService;
@@ -21,12 +19,13 @@ import com.garage.autogarage.service.LoginUserDetailsService;
 public class LoginConfiguration {
 	@Autowired
 	LoginUserDetailsService service;
+	
 
 	@Bean
 	public SecurityFilterChain srf(HttpSecurity httpSecurity) {
 		httpSecurity
 					.csrf(c->c.disable())
-					.authorizeHttpRequests(s->s.requestMatchers("/home","/register")
+					.authorizeHttpRequests(s->s.requestMatchers("/home","/register","/login")
 							.permitAll()
 							.anyRequest()
 							.authenticated())

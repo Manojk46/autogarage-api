@@ -1,10 +1,10 @@
 package com.garage.autogarage.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.garage.autogarage.entity.User;
@@ -25,7 +25,8 @@ public class HomeController {
 		return "hello";
 	}
 	@PostMapping("register")
- public void login(@RequestBody User user) {
+ public void register(@RequestBody User user) {
 	 service.login(user);
  }
+
 }
