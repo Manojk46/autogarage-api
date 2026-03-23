@@ -25,7 +25,7 @@ public class LoginConfiguration {
 	public SecurityFilterChain srf(HttpSecurity httpSecurity) {
 		httpSecurity
 					.csrf(c->c.disable())
-					.authorizeHttpRequests(s->s.requestMatchers("/home","/register","/login")
+					.authorizeHttpRequests(s->s.requestMatchers("/home","/register")
 							.permitAll()
 							.anyRequest()
 							.authenticated())

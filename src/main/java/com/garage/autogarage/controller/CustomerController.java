@@ -3,11 +3,9 @@ package com.garage.autogarage.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.PutExchange;
-
 import com.garage.autogarage.dto.CustomerRequest;
 import com.garage.autogarage.dto.CustomerResponse;
 import com.garage.autogarage.service.CustomerService;
