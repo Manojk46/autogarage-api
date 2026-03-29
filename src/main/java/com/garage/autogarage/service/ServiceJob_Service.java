@@ -26,6 +26,8 @@ public class ServiceJob_Service {
 	AppointmentRepository appointmentRepository;
 	@Autowired
 	MechanicRepository mechanicRepository;
+	@Autowired
+	InvoiceService invoiceService;
 
 	public ServiceJobResponse addjob(ServiceJobRequest request) {
 		Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
@@ -106,6 +108,9 @@ public class ServiceJob_Service {
 	            job.setCompletedAt(LocalDateTime.now());
 	            job.getAppointment().setStatus(AppointmentStatus.COMPLETED);
 	            appointmentRepository.save(job.getAppointment());
+	            ServiceJob saved = repository.save(job);
+	            invoiceService.generateInvoice(saved.getId());
+	            return mapToResponse(saved);
 	        }
 
 	        ServiceJob updated = repository.save(job);
