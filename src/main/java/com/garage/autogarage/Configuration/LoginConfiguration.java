@@ -25,7 +25,13 @@ public class LoginConfiguration {
 	public SecurityFilterChain srf(HttpSecurity httpSecurity) {
 		httpSecurity
 					.csrf(c->c.disable())
-					.authorizeHttpRequests(s->s.requestMatchers("/home","/register")
+					.authorizeHttpRequests(s->s.requestMatchers("/home","/register",
+							"/swagger-ui.html",
+			                "/swagger-ui/**",
+			                "/api-docs/**",
+			                "/api-docs",
+			                "/v3/api-docs/**",
+			                "/v3/api-docs")
 							.permitAll()
 							.anyRequest()
 							.authenticated())

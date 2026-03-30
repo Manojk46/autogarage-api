@@ -17,6 +17,9 @@ import com.garage.autogarage.dto.VehicleRequest;
 import com.garage.autogarage.dto.VehicleResponse;
 import com.garage.autogarage.service.VehicleService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Vehicle", description = "Vehicle management APIs")
 @RestController
 @RequestMapping("vehicle")
 public class VehicleController {

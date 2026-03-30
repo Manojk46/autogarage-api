@@ -10,6 +10,8 @@ import com.garage.autogarage.dto.CustomerRequest;
 import com.garage.autogarage.dto.CustomerResponse;
 import com.garage.autogarage.service.CustomerService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+@Tag(name = "Customer", description = "Customer management APIs")
 @RestController
 @RequestMapping("customer")
 public class CustomerController {

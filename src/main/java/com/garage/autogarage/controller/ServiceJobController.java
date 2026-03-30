@@ -16,6 +16,10 @@ import com.garage.autogarage.dto.ServiceJobRequest;
 import com.garage.autogarage.dto.ServiceJobResponse;
 import com.garage.autogarage.service.ServiceJob_Service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Service Job", description = "Service job lifecycle management APIs")
 @RestController
 @RequestMapping("job")
 public class ServiceJobController {
@@ -49,6 +53,8 @@ public class ServiceJobController {
         return ResponseEntity.ok(service.getJobsByMechanic(mechanicId));
     }
 
+    @Operation(summary = "Update job status", 
+    		description = "Updates service job status. Follows state machine: PENDING → IN_PROGRESS → COMPLETED. Auto generates invoice on COMPLETED.")
     @PutMapping("/{id}/status/{status}")
     public ResponseEntity<ServiceJobResponse> updateJobStatus(
             @PathVariable Long id,

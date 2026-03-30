@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.garage.autogarage.Exception.BadRequest;
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.ServiceJobRequest;
 import com.garage.autogarage.dto.ServiceJobResponse;
 import com.garage.autogarage.entity.Appointment;
@@ -31,16 +33,16 @@ public class ServiceJob_Service {
 
 	public ServiceJobResponse addjob(ServiceJobRequest request) {
 		Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
-                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+                .orElseThrow(() -> new ResourceNotFound("Appointment not found"));
 
         if (repository.existsByAppointmentId(request.getAppointmentId())) {
-            throw new RuntimeException("Service job already exists for this appointment");
+            throw new BadRequest("Service job already exists for this appointment");
         }
 
         Mechanic mechanic = null;
         if (request.getMechanicId() != null) {
             mechanic = mechanicRepository.findById(request.getMechanicId())
-                    .orElseThrow(() -> new RuntimeException("Mechanic not found"));
+                    .orElseThrow(() -> new ResourceNotFound("Mechanic not found"));
         } else if (appointment.getMechanic() != null) {
             mechanic = appointment.getMechanic();
         }
@@ -70,7 +72,7 @@ public class ServiceJob_Service {
 
 	    public ServiceJobResponse getJobById(Long id) {
 	        ServiceJob job = repository.findById(id)
-	                .orElseThrow(() -> new RuntimeException("Service job not found with id: " + id));
+	                .orElseThrow(() -> new ResourceNotFound("Service job not found with id: " + id));
 	        return mapToResponse(job);
 	    }
 
@@ -91,15 +93,15 @@ public class ServiceJob_Service {
 
 	    public ServiceJobResponse updateJobStatus(Long id, String status) {
 	        ServiceJob job = repository.findById(id)
-	                .orElseThrow(() -> new RuntimeException("Service job not found with id: " + id));
+	                .orElseThrow(() -> new ResourceNotFound("Service job not found with id: " + id));
 
 	        JobStatus newStatus = JobStatus.valueOf(status.toUpperCase());
 
 	        if (job.getStatus() == JobStatus.COMPLETED) {
-	            throw new RuntimeException("Job is already completed");
+	            throw new BadRequest("Job is already completed");
 	        }
 	        if (job.getStatus() == JobStatus.IN_PROGRESS && newStatus == JobStatus.PENDING) {
-	            throw new RuntimeException("Cannot move job back to PENDING");
+	            throw new BadRequest("Cannot move job back to PENDING");
 	        }
 
 	        job.setStatus(newStatus);

@@ -3,12 +3,15 @@ package com.garage.autogarage.controller;
 import com.garage.autogarage.dto.JobPartRequest;
 import com.garage.autogarage.dto.JobPartResponse;
 import com.garage.autogarage.service.JobPartService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Job Parts", description = "Parts used in service jobs")
 @RestController
 @RequestMapping("parts")
 @RequiredArgsConstructor

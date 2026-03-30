@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.CustomerRequest;
 import com.garage.autogarage.dto.CustomerResponse;
 import com.garage.autogarage.entity.Customer;
@@ -17,7 +18,7 @@ public class CustomerService {
 
  public CustomerResponse addcustomer(CustomerRequest request) {
 	if(repository.existsByemail(request.getEmail())) {
-		throw new RuntimeException("Customer alreday Exists");
+		throw new ResourceNotFound("Customer alreday Exists");
 	}
 	Customer customer=new Customer();
 	customer.setName(request.getName());
@@ -37,12 +38,12 @@ public class CustomerService {
  
  public CustomerResponse getcustomer(Long id) {
 		Customer customer=repository.findById(id)
-				.orElseThrow(()->new RuntimeException("Customer Not Found"));
+				.orElseThrow(()->new ResourceNotFound("Customer Not Found"));
 				return maptoResponse(customer);
  }
  public CustomerResponse updateCustomer(Long id, CustomerRequest request) {
 		Customer customer=repository.findById(id)
-				.orElseThrow(()->new RuntimeException("Customer Not FOund"));
+				.orElseThrow(()->new ResourceNotFound("Customer Not FOund"));
 		customer.setName(request.getName());
 		customer.setAddress(request.getAddress());
 		customer.setEmail(request.getEmail());
@@ -53,7 +54,7 @@ public class CustomerService {
 
 	 public CustomerResponse deleteCustomerbyid(Long id) {
 		 Customer customer=repository.findById(id)
-				 .orElseThrow(()->new RuntimeException("Customer Not FOund"));
+				 .orElseThrow(()->new ResourceNotFound("Customer Not FOund"));
 		 repository.delete(customer);
 		return maptoResponse(customer);
 	 }

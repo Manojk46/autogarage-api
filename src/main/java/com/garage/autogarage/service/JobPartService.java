@@ -1,5 +1,7 @@
 package com.garage.autogarage.service;
 
+import com.garage.autogarage.Exception.BadRequest;
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.JobPartRequest;
 import com.garage.autogarage.dto.JobPartResponse;
 import com.garage.autogarage.entity.JobPart;
@@ -23,11 +25,11 @@ public class JobPartService {
     
     public JobPartResponse addPart(JobPartRequest request) {
         ServiceJob job = serviceJobRepository.findById(request.getServiceJobId())
-                .orElseThrow(() -> new RuntimeException("Service job not found"));
+                .orElseThrow(() -> new ResourceNotFound("Service job not found"));
 
         
         if (job.getStatus() == JobStatus.COMPLETED) {
-            throw new RuntimeException("Cannot add parts to a completed job");
+            throw new BadRequest("Cannot add parts to a completed job");
         }
 
         Double totalPrice = request.getQuantity() * request.getUnitPrice();
@@ -55,7 +57,7 @@ public class JobPartService {
     
     public String deletePart(Long id) {
         JobPart part = jobPartRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Part not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFound("Part not found with id: " + id));
         jobPartRepository.delete(part);
         return "Part deleted successfully";
     }

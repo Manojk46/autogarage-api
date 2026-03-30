@@ -1,5 +1,7 @@
 package com.garage.autogarage.service;
 
+import com.garage.autogarage.Exception.BadRequest;
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.InvoiceResponse;
 import com.garage.autogarage.entity.*;
 import com.garage.autogarage.repository.InvoiceRepository;
@@ -25,11 +27,11 @@ public class InvoiceService {
     public InvoiceResponse generateInvoice(Long serviceJobId) {
 
         ServiceJob job = serviceJobRepository.findById(serviceJobId)
-                .orElseThrow(() -> new RuntimeException("Service job not found"));
+                .orElseThrow(() -> new ResourceNotFound("Service job not found"));
 
         
         if (invoiceRepository.findByServiceJobId(serviceJobId).isPresent()) {
-            throw new RuntimeException("Invoice already generated for this job");
+            throw new BadRequest("Invoice already generated for this job");
         }
 
         
@@ -58,14 +60,14 @@ public class InvoiceService {
     
     public InvoiceResponse getInvoiceByJob(Long jobId) {
         Invoice invoice = invoiceRepository.findByServiceJobId(jobId)
-                .orElseThrow(() -> new RuntimeException("Invoice not found for job: " + jobId));
+                .orElseThrow(() -> new ResourceNotFound("Invoice not found for job: " + jobId));
         return mapToResponse(invoice);
     }
 
     
     public InvoiceResponse getInvoiceById(Long id) {
         Invoice invoice = invoiceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Invoice not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFound("Invoice not found with id: " + id));
         return mapToResponse(invoice);
     }
 
@@ -80,7 +82,7 @@ public class InvoiceService {
    
     public InvoiceResponse markAsPaid(Long id) {
         Invoice invoice = invoiceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Invoice not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFound("Invoice not found with id: " + id));
 
         if (invoice.getPaymentStatus() == PaymentStatus.PAID) {
             throw new RuntimeException("Invoice is already paid");

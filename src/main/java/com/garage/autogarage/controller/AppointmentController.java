@@ -16,12 +16,18 @@ import com.garage.autogarage.dto.AppointmentRequest;
 import com.garage.autogarage.dto.AppointmentResponse;
 import com.garage.autogarage.service.AppointmentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Appointment", description = "Appointment booking and management APIs")
 @RestController
 @RequestMapping("appointment")
 public class AppointmentController {
 	@Autowired
 	AppointmentService service;
 	
+	@Operation(summary = "Book a new appointment", 
+			description = "Books a service appointment for a vehicle. Checks for mechanic slot conflicts automatically.")
 	@PostMapping
 	public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentRequest request){
 		return ResponseEntity.ok(service.bookAppointment(request));

@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.garage.autogarage.Exception.BadRequest;
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.MechanicRequest;
 import com.garage.autogarage.dto.MechanicResponse;
 import com.garage.autogarage.entity.Mechanic;
@@ -22,10 +24,10 @@ public class MechanicService {
 
 	public MechanicResponse addMechanic(MechanicRequest request) {
 		if(mechanicRepository.existsByEmail(request.getEmail())) {
-			throw new RuntimeException("Mechanic exists by email");
+			throw new BadRequest("Mechanic exists by email");
 		}
 		User user=userRepository.findById(request.getUserId())
-				.orElseThrow(()-> new RuntimeException("User Not Found"));
+				.orElseThrow(()-> new ResourceNotFound("User Not Found"));
 		Mechanic mechanic=Mechanic.builder()
 				.name(request.getName())
 				.email(request.getEmail())
@@ -54,13 +56,13 @@ public class MechanicService {
 	}
 	public MechanicResponse getMechanicByid(Long id) {
 		Mechanic mechanic=mechanicRepository.findById(id)
-				.orElseThrow(()-> new RuntimeException("Mechnaic Not FOund"));
+				.orElseThrow(()-> new ResourceNotFound("Mechnaic Not FOund"));
 		
 		return maptoResponse(mechanic);
 	}
 	public MechanicResponse updateMechanic(Long id, MechanicRequest request) {
 		 Mechanic mechanic = mechanicRepository.findById(id)
-	                .orElseThrow(() -> new RuntimeException("Mechanic not found"));
+	                .orElseThrow(() -> new ResourceNotFound("Mechanic not found"));
 
 	        mechanic.setName(request.getName());
 	        mechanic.setEmail(request.getEmail());
@@ -72,7 +74,7 @@ public class MechanicService {
 	}
 	public MechanicResponse deleteMechanic(Long id) {
 		 Mechanic mechanic = mechanicRepository.findById(id)
-	                .orElseThrow(() -> new RuntimeException("Mechanic not found with id: " + id));
+	                .orElseThrow(() -> new ResourceNotFound("Mechanic not found with id: " + id));
 	        mechanicRepository.delete(mechanic);
 		return maptoResponse(mechanic);
 	}

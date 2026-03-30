@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.garage.autogarage.Exception.BadRequest;
+import com.garage.autogarage.Exception.ResourceNotFound;
 import com.garage.autogarage.dto.AppointmentRequest;
 import com.garage.autogarage.dto.AppointmentResponse;
 import com.garage.autogarage.entity.Appointment;
@@ -29,18 +31,18 @@ public class AppointmentService {
 
 	public AppointmentResponse bookAppointment(AppointmentRequest request) {
 		Vehicle vehicle=vehicleRepository.findById(request.getVehicleid())
-				.orElseThrow(()->new RuntimeException("Vehicle Not FOund"));
+				.orElseThrow(()->new ResourceNotFound("Vehicle Not FOund"));
 		
 		LocalDate date=LocalDate.parse(request.getDate());
 		LocalTime time=LocalTime.parse(request.getTimeslot());
 		Mechanic mechanic=null;
 		if(request.getMechanicid()!=null) {
 			mechanic=mechanicRepository.findById(request.getMechanicid())
-					.orElseThrow(()->new RuntimeException("Mechanic Not FOund"));
+					.orElseThrow(()->new ResourceNotFound("Mechanic Not FOund"));
 			boolean slottaken=repository.existsByMechanicIdAndDateAndTimeslot(
 					mechanic.getId(), date, time);
 			if(slottaken) {
-				throw new RuntimeException("Mechanic is Booked at date and time");
+				throw new BadRequest("Mechanic is Booked at date and time");
 			}
 		}
 		

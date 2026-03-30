@@ -17,6 +17,9 @@ import com.garage.autogarage.dto.MechanicRequest;
 import com.garage.autogarage.dto.MechanicResponse;
 import com.garage.autogarage.service.MechanicService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Mechanic", description = "Mechanic management APIs")
 @RestController
 @RequestMapping("mechanic")
 public class MechanicController {
